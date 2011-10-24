@@ -1,0 +1,11 @@
+{ 
+  "name":        "kannel.js",
+  "version":     "0.0.1",
+  "description": "Kannel Box Prococol",
+  "author":      "Badlee Oshimin (http://rsms.me/)",
+  "directories": {"lib" : "./lib"},
+  "main":        "lib/index.js",
+  "keywords":    ["protocol", "kannel", "sms", "message"],
+  "engines":     {"node": ">=0.4.0"},
+  "repository":  {"type": "git", "url": "http://github.com/badlee/kannel.git"}
+}
