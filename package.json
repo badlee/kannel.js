@@ -1,12 +1,37 @@
-{ 
-  "name":        "kannel.js",
-  "version":     "0.0.2",
-  "description": "Kannel Box Prococol",
-  "author":      "Badlee Oshimin (badlee.oshimin@gmail.com)",
-  "directories": {"lib" : "./lib"},
-  "main":        "lib/index.js",
-  "keywords":    ["protocol", "kannel", "sms", "message"],
-  "engines":     {"node": ">=0.4.0"},
-  "repository":  {"type": "git", "url": "http://github.com/badlee/kannel.js.git"},
-  "dependencies": {}
+{
+  "name": "kannel",
+  "version": "0.0.2b",
+  "description": "Kannel Box Protocol",
+  "author": "Ulrich Badinga (badinga.ulrich@gmail.com)",
+  "directories": {
+    "lib": "./lib"
+  },
+  "main": "lib/index.js",
+  "keywords": [
+    "protocol",
+    "kannel",
+    "sms",
+    "smsc",
+    "smsbox",
+    "smpp",
+    "bearebox",
+    "smsbox",
+    "message"
+  ],
+  "engines": {
+    "node": ">=0.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/badlee/kannel.js.git"
+  },
+  "dependencies": {},
+  "bugs": {
+    "url": "https://github.com/badlee/kannel.js/issues"
+  },
+  "homepage": "https://github.com/badlee/kannel.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "license": "MIT"
 }
