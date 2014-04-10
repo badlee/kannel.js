@@ -1,11 +1,12 @@
 { 
   "name":        "kannel.js",
-  "version":     "0.0.1",
+  "version":     "0.0.2",
   "description": "Kannel Box Prococol",
   "author":      "Badlee Oshimin (badlee.oshimin@gmail.com)",
   "directories": {"lib" : "./lib"},
   "main":        "lib/index.js",
   "keywords":    ["protocol", "kannel", "sms", "message"],
   "engines":     {"node": ">=0.4.0"},
-  "repository":  {"type": "git", "url": "http://github.com/badlee/kannel.js.git"}
+  "repository":  {"type": "git", "url": "http://github.com/badlee/kannel.js.git"},
+  "dependencies": {}
 }
