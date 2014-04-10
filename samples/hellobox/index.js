@@ -16,15 +16,11 @@ var status = kannel.status;
 
   For jsonPath sample look at http://goessner.net/articles/JsonPath/
 */
-var app = new kannel.smsbox(__dirname+"/../../kannel/kannel.conf?host=$.smsbox[(@.length-1)].bearerbox-host&port=$.core[(@.length-1)].smsbox-port&id=$.smsbox[(@.length-1)].smsbox-id&frequence=$.smsbox[(@.length-1)].frequence-time");
-
-//app.conf.id = "helloBox";
+var app = new kannel.smsbox(__dirname+"/../../kannel/kannel.conf?host=$.smsbox[-1:].bearerbox-host&port=$.core[-1:].smsbox-port&id=$.smsbox[-1:].smsbox-id&frequence=$.smsbox[-1:].frequence-time");
 
 /*
 //manual config
-var app = new kannel.kannel({
-	host : '127.0.0.1', // bearerbox host
-	port : 13001, //smsc connection port
+var app = new kannel.smsbox({
 	id   : "helloBox", // smsc id
 	frequence : 1 // hearbeat
 });
