@@ -1,6 +1,11 @@
 # KANNEL Box Protocol for Nodejs
 [![NPM](https://nodei.co/npm/kannel.png?downloads=true&stars=true)](https://nodei.co/npm/kannel/) [![NPM](https://nodei.co/npm-dl/kannel.png?months=1)](https://nodei.co/npm/kannel/)
 
+### Installation
+<pre>
+npm install kannel
+</pre>
+
 ### Connect to bearerbox using object config
 <pre>
 	var kannel = require('kannel'),
@@ -117,6 +122,34 @@ The parser use [JSONpath](http://goessner.net/articles/JsonPath/) for access to 
 	});
 	app.connect();
 </pre>
+
+### How test samples
+Run bearebox
+<pre>
+	$ cd path/to/kannel.js
+	$ sudo bearerbox kannel/kannel.conf
+</pre>
+
+
+Test hellobox
+<pre>
+    $ cd path/to/kannel.js
+    $ node samples/hellobox
+    hello box is connected to 127.0.0.1:14001
+    for send a message tip 
+        SMS > FROM TO Your Message
+        Exp:  070805 09505 hello SMS.
+    SMS > 
+</pre>
+
+Test messagesBoard
+<pre>
+	$ cd path/to/kannel.js
+	$ node samples/messagesBoard
+	Fri Apr 11 2014 04:09:22 GMT+0100 (WAT) Server is listening on port 14014
+</pre>
+Goto to http://127.0.0.1:14014
+
 
 ### License
 

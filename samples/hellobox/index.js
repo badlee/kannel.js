@@ -41,6 +41,7 @@ app.on("admin",function(data){
 
 app.on('connect',function(){
 	console.log("hello box is connected to "+app.conf["host"]+":"+app.conf['port']);
+	console.log("for send a message tip \n\tSMS > FROM TO Your Message\n\tExp:  070805 09505 hello SMS.");
 	var readline = require('readline'),
     rl = readline.createInterface(process.stdin, process.stdout);
 	rl.setPrompt('SMS > ');
