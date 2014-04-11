@@ -1,6 +1,6 @@
 {
   "name": "kannel",
-  "version": "0.0.2b",
+  "version": "0.0.3",
   "description": "Kannel Box Protocol",
   "author": "Ulrich Badinga (badinga.ulrich@gmail.com)",
   "directories": {
