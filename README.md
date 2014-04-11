@@ -1,4 +1,5 @@
 # KANNEL Box Protocol for Nodejs
+[![NPM](https://nodei.co/npm/kannel.png?downloads=true&stars=true)](https://nodei.co/npm/kannel/) [![NPM](https://nodei.co/npm-dl/kannel.png?months=1)](https://nodei.co/npm/kannel/)
 
 ### Connect to bearerbox using object config
 <pre>
@@ -116,12 +117,6 @@ The parser use [JSONpath](http://goessner.net/articles/JsonPath/) for access to 
 	});
 	app.connect();
 </pre>
-
-
-### Installation
-npm:
-
-`npm install kannel`
 
 ### License
 
