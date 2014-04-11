@@ -173,7 +173,7 @@ wsServer.on('request', function(request) {
 });
 
 app.on("sms",function(data){
-		console.log("Recive SMS : ",data);
+		console.log("Recive SMS : ",data.msgdata.toString("utf8"));
 		var obj = {
             time: (new Date()).getTime(),
             text: htmlEntities(data.msgdata.toString("utf8")),
