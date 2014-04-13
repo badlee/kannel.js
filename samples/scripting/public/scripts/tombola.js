@@ -1,14 +1,11 @@
-logger.log("Start SMS script");
 var m = new MSG();
-
-
-
 localStorage.vote = (localStorage.vote || 0)+1;
-logger.log(localStorage.vote);
-if(localStorage.vote % 1000 == 0){
-	m.msgdata = "NB SMS : "+localStorage.vote;
-	localStorage.voteWiner = localStorage.voteWiner || [];
-	localStorage.voteWiner.push(sms.sender);
-	m.sendSMS()
-}
-logger.log("End SMS script");
+localStorage.voteWiner = localStorage.voteWiner || [];
+//	Un gagnant tout les 1000 messages, avec un maximum de 10 gagants
+if(localStorage.vote % 1000 == 0 && 	localStorage.voteWiner.length < 10 ){
+	m.msgdata = "YOU'R WINNER !!!";
+	localStorage.voteWiner.push(new Buffer(sms.sender).toString());
+	logger.log("List of winner",localStorage.voteWiner);
+}else
+		m.msgdata = "TRY AGAIN";
+m.sendSMS()

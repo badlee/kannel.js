@@ -1,19 +1,19 @@
-logger.log("Start SMS script");
-var m = new MSG();
-
+var m = new MSG(),
+	votes = ["A","B","C","D"];
 total = 0;
 localStorage.vote = localStorage.vote || {};
-if(["a","b","c","d"].indexOf((sms.keywords[1] || "").toLowerCase()) != -1){
+if(votes.indexOf((sms.keywords[1] || "").toUpperCase()) != -1){
 	if(sms.keywords[1])
 		localStorage.vote[sms.keywords[1]] = 1 +(localStorage.vote[sms.keywords[1]] || 0);
-	for(var i in localStorage.vote)
-		total+=localStorage.vote[i];
-	m.msgdata = "VOTE - "+total+" : ";
-	for(var i in localStorage.vote)
-		m.msgdata+=", "+i.toUpperCase()+" : "+(localStorage.vote[i]/total*100).toFixed(2)+"%("+localStorage.vote[i]+")";
+	for(var i in votes)
+		total+=(localStorage.vote[votes[i]] || 0);
+	m.msgdata = "VOTE  ["+total+"] : ";
+	for(var i in votes)
+		m.msgdata+=" "+votes[i]+"["+((localStorage.vote[votes[i]] || 0 )/total*100).toFixed(2)+"%("+(localStorage.vote[votes[i]] || 0 )+")]";
 }else if(!sms.keywords[1]){
-	m.msgdata = "Evoyez VOTE suivit de votre vote. Ex : VOTE "+["A","B","C","D"].rnd;
+	m.msgdata = "Evoyez VOTE suivit de votre vote. Ex : VOTE "+votes.rnd;
 } else
-	m.msgdata = "VOTE POSSIBLE : "+ ["A","B","C","D"].join(" ")+" , not "+sms.keywords[1];
+	m.msgdata = "VOTE POSSIBLE : "+ votes.join(" ")+" , not "+sms.keywords[1];
 m.sendSMS()
-logger.log("End SMS script");
+// if you want log your activity
+//logger.log("Console.log message");

@@ -1,8 +1,8 @@
-logger.log("Start SMS script");
+logger.log("Je suis un log");
 
 var m = new MSG();
 
-m.msgdata = "Cool from js";
+m.msgdata = "Je suis une service SMS";
 m.sendSMS()
 
 logger.log("End SMS script");
