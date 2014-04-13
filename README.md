@@ -131,7 +131,8 @@ Run bearebox
 </pre>
 
 
-Test hellobox (REPL sms)
+##### Test hellobox (REPL sms)
+![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/hello.png)
 <pre>
     $ cd path/to/kannel.js
     $ node samples/hellobox
@@ -144,7 +145,8 @@ Test hellobox (REPL sms)
 Type your SMS in REPL console, the server send a echo responce for each recieved sms. 
 
 
-Test messagesBoard (websocket and sms chat)
+##### Test messagesBoard (websocket and sms chat)
+![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/messageBoard.png)
 <pre>
 	$ cd path/to/kannel.js
 	$ node samples/messagesBoard
@@ -154,7 +156,8 @@ Goto to http://127.0.0.1:14014,
 Type your name, your message or send sms for chat, Enjoy your chat.
 
 
-Test scripting (coffeeScript and javascript VAS applications)
+##### Test scripting (coffeeScript and javascript VAS applications)
+![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/scripting.png)
 <pre>
 	$ cd path/to/kannel.js
 	$ node samples/scripting
@@ -163,7 +166,6 @@ Test scripting (coffeeScript and javascript VAS applications)
 Goto to http://127.0.0.1:14014, for show the dashboard.
 Goto to samples/scripting/public/scripts for sms service.
 The SMS services is identified by the name of script whitout extension. ( Ex : "FUTURE" represent futur.coffee, "COUNT" represent count.js )
-
 
 ### License
 
