@@ -108,7 +108,7 @@ The parser use [JSONpath](http://goessner.net/articles/JsonPath/) for access to 
 		console.log("hello box is connected to "+app.conf["host"]+":"+app.conf['port']);
 	});
 	app.on("admin",function(data){
-		console.log("Recive ADMIN CMD ",
+		console.log("Receive ADMIN CMD ",
 			" [CODE:",data.command,
 			"][FROM BOX:",data.boxc_id.toString(),
 		"]");
@@ -160,8 +160,9 @@ Test scripting (coffeeScript and javascript VAS applications)
 	$ node samples/scripting
 	Fri Apr 11 2014 04:09:22 GMT+0100 (WAT) Server is listening on port 14014
 </pre>
-Goto to http://127.0.0.1:14014,
-Type your name, your message or send sms for chat, Enjoy your chat.
+Goto to http://127.0.0.1:14014, for show the dashboard.
+Goto to samples/scripting/public/scripts for sms service.
+The SMS services is identified by the name of script whitout extension. ( Ex : "FUTURE" represent futur.coffee, "COUNT" represent count.js )
 
 
 ### License
