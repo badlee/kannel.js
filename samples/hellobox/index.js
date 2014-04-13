@@ -47,13 +47,17 @@ app.on('connect',function(){
 	rl.setPrompt('SMS > ');
 	rl.prompt();
 	app.on("sms",function(data){
-		console.log("Recive SMS : ",data);
+		console.log("Recive SMS : ",data.id,data.msgdata.toString("utf8"));
 		rl.prompt();
+		app.write("ack",{
+            nack : kannel.status.ack.success,
+            time : Math.floor((new Date).getTime()/1000),
+            id   : data.id
+        });
 		this.sendSMS({
 		  sender: data.receiver,
 		  receiver: data.sender,
-		  msgdata: 'echo <-> '+data.msgdata,
-		  id : data.id
+		  msgdata: 'echo <-> '+data.msgdata
 		});	
 	});
 	app.on("error",function(e){

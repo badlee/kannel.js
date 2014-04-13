@@ -38,6 +38,8 @@ var history = [ ];
 // list of currently connected clients (users)
 var clients = [ ];
 
+var clientsSMS = {};
+
 /**
  * Helper function for escaping input strings
  */
@@ -146,13 +148,15 @@ wsServer.on('request', function(request) {
                     clients[i].sendUTF(json);
                 }
                 try{
-                app.write("sms",{
-				  sender: obj.author,
-				  receiver: "demoSMS" ,
-				  msgdata: message.utf8Data,
-				  time: Math.floor(obj.time/1000),
-				  sms_type: kannel.status.sms.mt_reply
-				});
+                for(var i in clientsSMS )
+                	if(clientsSMS[i])
+				        app.write("sms",{
+						  sender: obj.author,
+						  receiver: i ,
+						  msgdata: message.utf8Data,
+						  time: Math.floor(obj.time/1000),
+						  sms_type: kannel.status.sms.mt_reply
+						});
 				}catch(e){}
             }
         }
@@ -164,22 +168,48 @@ wsServer.on('request', function(request) {
             console.log((new Date()) + " Peer "
                 + connection.remoteAddress + " disconnected.");
             // remove user from the list of connected clients
-            clients.splice(index, 1);
+            clients.splice(index, 1);app.on("admin",function(data){
+	switch(data.command){
+		case status.admin.shutdown:
+			/*Shutdown*/
+			console.log("Receive shutdown command...bye");
+			process.exit();
+			break;
+	};
+})
             // push back user's color to be reused by another user
             colors.push(userColor);
         }
     });
 
 });
+app.on("admin",function(data){
+	switch(data.command){
+		case status.admin.shutdown:
+			/*Shutdown*/
+			console.log("Receive shutdown command...bye");
+			process.exit();
+			break;
+	};
+})
 
 app.on("sms",function(data){
 		console.log("Recive SMS : ",data.msgdata.toString("utf8"));
+        app.write("ack",{
+            nack : kannel.status.ack.success,
+            time : Math.floor((new Date).getTime()/1000),
+            id   : data.id
+        });
+		var sender = data.sender.toString();
 		var obj = {
             time: (new Date()).getTime(),
             text: htmlEntities(data.msgdata.toString("utf8")),
-            author: "SMS",
+            author: "[SMS]["+sender+"]",
             color: colors[0]
         };
+        if(clientsSMS[sender])
+        	clearTimeout(clientsSMS[sender]);
+        clientsSMS[sender] = setTimeout((function(id){ clientsSMS[id] = null; delete clientsSMS[id]; }).bind(null, sender),30000)
         history.push(obj);
         history = history.slice(-100);
 	// broadcast message to all connected clients
@@ -187,6 +217,17 @@ app.on("sms",function(data){
     for (var i=0; i < clients.length; i++) {
         try{clients[i].sendUTF(json);}catch(e){}
     }
+    try{
+		for(var i in clientsSMS )
+			if(clientsSMS[i] && i != sender)
+			    app.write("sms",{
+				  sender: obj.author,
+				  receiver: i ,
+				  msgdata: message.utf8Data,
+				  time: Math.floor(obj.time/1000),
+				  sms_type: kannel.status.sms.mt_reply
+				});
+	}catch(e){}
 })
 
 app.connect();

@@ -131,7 +131,7 @@ Run bearebox
 </pre>
 
 
-Test hellobox
+Test hellobox (REPL sms)
 <pre>
     $ cd path/to/kannel.js
     $ node samples/hellobox
@@ -141,14 +141,27 @@ Test hellobox
         Exp:  070805 09505 hello SMS.
     SMS > 
 </pre>
+Type your SMS in REPL console, the server send a echo responce for each recieved sms. 
 
-Test messagesBoard
+
+Test messagesBoard (websocket and sms chat)
 <pre>
 	$ cd path/to/kannel.js
 	$ node samples/messagesBoard
 	Fri Apr 11 2014 04:09:22 GMT+0100 (WAT) Server is listening on port 14014
 </pre>
-Goto to http://127.0.0.1:14014
+Goto to http://127.0.0.1:14014,
+Type your name, your message or send sms for chat, Enjoy your chat.
+
+
+Test scripting (coffeeScript and javascript VAS applications)
+<pre>
+	$ cd path/to/kannel.js
+	$ node samples/scripting
+	Fri Apr 11 2014 04:09:22 GMT+0100 (WAT) Server is listening on port 14014
+</pre>
+Goto to http://127.0.0.1:14014,
+Type your name, your message or send sms for chat, Enjoy your chat.
 
 
 ### License
