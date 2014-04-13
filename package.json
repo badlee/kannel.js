@@ -1,7 +1,7 @@
 {
   "name": "kannel",
-  "version": "0.0.4",
-  "description": "Kannel Box Protocol",
+  "version": "0.0.4b",
+  "description": "Kanel.js: Is a ipc protocol implemented in full javascript, it allow to write a powerfull kannel smsbox with nodejs",
   "author": "Ulrich Badinga (badinga.ulrich@gmail.com)",
   "directories": {
     "lib": "./lib"
