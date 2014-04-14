@@ -1,4 +1,4 @@
-# KANNEL Box Protocol for Nodejs (Version 0.0.5)
+# KANNEL Box Protocol for Nodejs (v0.0.5)
 [![NPM](https://nodei.co/npm/kannel.png?downloads=true&stars=true)](https://nodei.co/npm/kannel/) [![NPM](https://nodei.co/npm-dl/kannel.png?months=1)](https://nodei.co/npm/kannel/)
 
 ### Installation
