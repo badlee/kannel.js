@@ -98,13 +98,22 @@ var app = new kannel.smsbox({
 
 //var smsbox = app.conf.smsbox[app.conf.smsbox.length-1];
 //var core = app.conf.core[app.conf.core.length-1];
-
+var retryConnect = null;
+var retryToConnect = function(){
+	clearTimeout(retryConnect);
+	retryConnect = setTimeout(function(){
+		console.log("\t\t...retry to connect");
+		app.connect();
+	},10000);
+	return retryConnect;
+}
 app.on("admin",function(data){
 	switch(data.command){
 		case status.admin.shutdown:
 			/*Shutdown*/
-			console.log("Receive shutdown command...bye");
-			process.exit();
+			console.log("Receive shutdown command...retry to connect every 10s");
+			app.close();
+			retryToConnect();
 			break;
 	};
 });
@@ -223,10 +232,17 @@ var server =  http.createServer(function(req, res) {
         readFile(filename,res,uri);
 });
 
+app.on("error",function(e){
+    if(["EPIPE","ECONNREFUSED"].indexOf(e.code) > -1)
+		retryToConnect();
+})
+
 
 app.on('connect',function(){
+	clearInterval(retryConnect);
 	console.log("scripting box is connected to "+app.conf["host"]+":"+app.conf['port']);
-	server.listen(app.conf.http_port || 1337);
 	languageTypes.initVM();
 });
 app.connect();
+
+server.listen(app.conf.http_port || 1337);

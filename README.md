@@ -1,4 +1,4 @@
-# KANNEL Box Protocol for Nodejs
+# KANNEL Box Protocol for Nodejs (Version 0.0.5)
 [![NPM](https://nodei.co/npm/kannel.png?downloads=true&stars=true)](https://nodei.co/npm/kannel/) [![NPM](https://nodei.co/npm-dl/kannel.png?months=1)](https://nodei.co/npm/kannel/)
 
 ### Installation
@@ -166,6 +166,23 @@ Type your name, your message or send sms for chat, Enjoy your chat.
 Goto to http://127.0.0.1:14014, for show the dashboard.
 Goto to samples/scripting/public/scripts for sms service.
 The SMS services is identified by the name of script whitout extension. ( Ex : "FUTURE" represent futur.coffee, "COUNT" represent count.js )
+
+You can also send SMS from http request
+<pre>
+/cgi-bin/sendsms
+	send sms GET request
+
+Paramametres
+	from : default "****"
+	to : receiver 
+	text : SMS to send
+
+Response
+	Success : http code 200 
+	Fails	: http code 403
+
+Exemple : http://127.0.0.1:14014/cgi-bin/sendsms?from=07086&to=05026&text=Test
+</pre>
 
 ### License
 

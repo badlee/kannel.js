@@ -42,13 +42,31 @@ image1.src = "/assets/img/down.png";
 	ticktock();
 	// Calling ticktock() every 1 second
 	setInterval(ticktock, 1000);
-	
-}());
+	/* ---------- Notifications ---------- */
 
-/* ---------- Notifications ---------- */
-	$('.noty').click(function(e){
+	$('#sms_send').click(function(e){
 		e.preventDefault();
-		var options = $.parseJSON($(this).attr('data-noty-options'));
-		noty(options);
-	});
-
+			var ops = {
+			    layout: 'top',
+			    type: 'success',
+			    timeout: 5000, // delay for closing event. Set false for sticky notifications
+			    force: true, // adds notification to the beginning of queue when set to true
+			    modal: true,
+			    maxVisible: 1, // you can set max visible notification for dismissQueue true option,
+			    killer: true, // for close all notifications before show
+			};
+		$.get("/cgi-bin/sendsms?"+$.param({
+			from : $("#sms_from").val(),
+			to : $("#sms_from").val(),
+			text : $("#sms_text").val()
+		}),function(){
+			ops.text = "Message send"
+			noty(ops);
+			$('[ref="sms_field"]').val("");
+		}).fail(function(){
+			ops.text = "Message not send";
+			ops.type = 'error';
+			noty(ops);
+		});
+	})
+}());

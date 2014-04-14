@@ -33,6 +33,15 @@ webSocketsServerPort = app.conf.http_port || webSocketsServerPort;
 /**
  * Global variables
  */
+var retryConnect = null;
+var retryToConnect = function(){
+    clearTimeout(retryConnect);
+    retryConnect = setTimeout(function(){
+        console.log("\t\t...retry to connect");
+        app.connect();
+    },10000);
+    return retryConnect;
+}
 // latest 100 messages
 var history = [ ];
 // list of currently connected clients (users)
@@ -82,9 +91,6 @@ var server = http.createServer(function(request, response) {
         response.writeHead(404, {'Content-Type': 'text/plain'});
         response.end('Sorry, unknown url');
     }
-});
-server.listen(webSocketsServerPort, function() {
-	console.log((new Date()) + " Server is listening on port " + webSocketsServerPort);
 });
 /**
  * WebSocket server
@@ -173,7 +179,8 @@ wsServer.on('request', function(request) {
 		case status.admin.shutdown:
 			/*Shutdown*/
 			console.log("Receive shutdown command...bye");
-			process.exit();
+            app.close();
+            retryToConnect();
 			break;
 	};
 })
@@ -230,4 +237,14 @@ app.on("sms",function(data){
 	}catch(e){}
 })
 
+app.on('connect',function(){
+    console.log("messageBoard box is connected to "+app.conf["host"]+":"+app.conf['port']);
+    server.listen(webSocketsServerPort, function() {
+        console.log((new Date()) + " Server is listening on port " + webSocketsServerPort);
+    });
+});
+app.on("error",function(e){
+    if(["EPIPE","ECONNREFUSED"].indexOf(e.code) > -1)
+        retryToConnect();
+})
 app.connect();

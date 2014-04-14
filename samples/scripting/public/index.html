@@ -1,7 +1,7 @@
 <!doctype html>
 <html><head>
     <meta charset="utf-8">
-    <title>Sample scripting VAS apps</title>
+    <title>Sample scripting VAS apps [DASHBOARD]</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Carlos Alvarez - Alvarez.is">
@@ -147,15 +147,44 @@ $(document).ready(function () {
         <div class="col-sm-3 col-lg-3">
        <!-- MAIL BLOCK -->
       	<div class="dash-unit">
-      		<dtitle>About this template</dtitle>
-      		<hr>
-			<div class="info-user">
-				<span aria-hidden="true" class="li_news fs2"></span>
-			</div>
-			<br>
+      		<dtitle>About HTTP interface</dtitle>
+      		<hr style="margin-bottom: 10px;">
   			<div class="text">
-  				<p><b>Alvarez.is:</b> A beautiful new Dashboard theme has been realised by Carlos Alvarez. Please, visit <a href="http://alvarez.is">Alvarez.is</a> for more details.</p>
+  				<pre style="padding: 5px 0px 0 3px;height: 233px;">
+/cgi-bin/sendsms
+	send sms GET request
+
+Paramametres
+	from : default "****"
+	to : receiver 
+	text : SMS to send
+
+Exemple : <a target="_blank" href="/cgi-bin/sendsms?from=07086&to=05026&text=Test">/cgi-bin/sendsms?from=07086&to=05026&text=Test</a>
+
+<center><a href="#myModal" role="button" class="btnnew" data-toggle="modal">Send SMS</a></center>
+  				</pre>
   			</div>
+  			<!-- Modal -->
+			  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			    <div class="modal-dialog">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			          <h4 class="modal-title">Send SMS</h4>
+			        </div>
+			        <div class="modal-body">
+                    	<input type="text" id="sms_from" name="from" placeholder="From" ref="sms_field">
+                    	<input type="text" id="sms_to" name="email" placeholder="To" ref="sms_field">
+                    	<textarea style="height: 195px;margin: 0px -1px 18px 0px;" id="sms_text" name="message" placeholder="Message" ref="sms_field"></textarea>
+                    
+			        </div>
+			        <div class="modal-footer">
+			          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			          <button type="button" class="btn btn-primary" id="sms_send">Send</button>
+			        </div>
+			      </div><!-- /.modal-content -->
+			    </div><!-- /.modal-dialog -->
+			  </div><!-- /.modal -->
   		</div><!-- /dash-unit -->
     </div><!-- /span3 -->
 
@@ -195,8 +224,8 @@ $(document).ready(function () {
 				</div>
 				<br>
       			<div class="text">
-      				<p><a href="https://nodei.co/npm/kannel/"><img src="https://camo.githubusercontent.com/979f6d9b9abbd5e6a890afb11bac348ca7a09364/68747470733a2f2f6e6f6465692e636f2f6e706d2f6b616e6e656c2e706e673f646f776e6c6f6164733d747275652673746172733d74727565" alt="NPM" data-canonical-src="https://nodei.co/npm/kannel.png?downloads=true&amp;stars=true" style="max-width:100%;"></a></p>
-      				<p><b>Kanel.js:</b> Is a ipc protocol implemented in full javascript, it allow to write a powerfull smsbox in javascript [<a href="https://github.com/badlee/kannel.js">github sources</a>].</p>
+      				<p><a target="_blank" href="https://nodei.co/npm/kannel/"><img src="https://camo.githubusercontent.com/979f6d9b9abbd5e6a890afb11bac348ca7a09364/68747470733a2f2f6e6f6465692e636f2f6e706d2f6b616e6e656c2e706e673f646f776e6c6f6164733d747275652673746172733d74727565" alt="NPM" data-canonical-src="https://nodei.co/npm/kannel.png?downloads=true&amp;stars=true" style="max-width:100%;"></a></p>
+      				<p><b>Kanel.js:</b> Is a ipc protocol implemented in full javascript, it allow to write a powerfull smsbox in javascript [<a target="_blank" href="https://github.com/badlee/kannel.js">github sources</a>].</p>
       			</div>
       		</div>
         </div>
@@ -211,7 +240,7 @@ $(document).ready(function () {
       		<div class="row">
       			<div class="col-sm-12 col-lg-12">
       			<p><img src="assets/img/logo.png" alt=""></p>
-      			<p>Blocks Dashboard Theme - Crafted With Love - Copyright 2013</p>
+      			<p><a target="_blank" href="http://alvarez.is/demo/free/blocks/">Blocks Dashboard Theme</a> - Crafted With Love - Copyright 2013</p>
       			</div>
 
       		</div><!-- /row -->
