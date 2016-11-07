@@ -1,3 +1,6 @@
+// Optional. You will see this name in eg. 'ps' or 'top' command
+process.title = 'hellobox';
+
 sys = require("util");
 var kannel = require('../../lib');
 var status = kannel.status;
@@ -16,7 +19,12 @@ var status = kannel.status;
 
   For jsonPath sample look at http://goessner.net/articles/JsonPath/
 */
-var app = new kannel.smsbox(__dirname+"/../../kannel/kannel.conf?host=$.smsbox[-1:].bearerbox-host&port=$.core[-1:].smsbox-port&id=$.smsbox[-1:].smsbox-id&frequence=$.smsbox[-1:].frequence-time");
+var app = new kannel.smsbox(
+	__dirname+"/../../kannel/kannel.conf?"+
+	"host=$.smsbox[-1:].bearerbox-host&"+
+	"port=$.core[-1:].smsbox-port&"+
+	"id=$.smsbox[-1:].smsbox-id&"+
+	"frequence=$.smsbox[-1:].frequence-time");
 
 /*
 //manual config
@@ -34,13 +42,14 @@ app.on("admin",function(data){
 		case status.admin.shutdown:
 			/*Shutdown*/
 			console.log("Receive shutdown command...bye");
+			app.close();
 			process.exit();
 			break;
 	};
 })
 
 app.on('connect',function(){
-	console.log("hello box is connected to "+app.conf["host"]+":"+app.conf['port']);
+	console.log("hellobox is connected to "+app.conf["host"]+":"+app.conf['port']);
 	console.log("for send a message tip \n\tSMS > FROM TO Your Message\n\tExp:  070805 09505 hello SMS.");
 	var readline = require('readline'),
     rl = readline.createInterface(process.stdin, process.stdout);

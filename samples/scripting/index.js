@@ -1,3 +1,7 @@
+// Optional. You will see this name in eg. 'ps' or 'top' command
+process.title = 'scriping';
+
+
 sys = require("util");
 var kannel = require('../../lib');
 var status = kannel.status;
@@ -111,7 +115,7 @@ app.on("admin",function(data){
 	switch(data.command){
 		case status.admin.shutdown:
 			/*Shutdown*/
-			console.log("Receive shutdown command...");
+			console.log("Receive shutdown command...bye");
 			app.close();
 			process.exit();
 			//retryToConnect();

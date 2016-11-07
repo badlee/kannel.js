@@ -2,7 +2,7 @@
 "use strict";
 
 // Optional. You will see this name in eg. 'ps' or 'top' command
-process.title = 'node-chat';
+process.title = 'messageBoard';
 
 // Port where we'll run the websocket server
 var webSocketsServerPort = 1337;
@@ -73,13 +73,17 @@ var server = http.createServer(function(request, response) {
         response.writeHead(200, {'Content-Type': 'text/html'});
         var fileStream = fs.createReadStream(__dirname+"/public/index.html");
         fileStream.pipe(response);
-    } else if (request.url.pathname.match(/^\/(frontend(\.js)?)?$/i)) {
+    } else if (request.url.pathname === '/frontend') {
         response.writeHead(200, {'Content-Type': 'text/javascript'});
         var fileStream = fs.createReadStream(__dirname+"/public/frontend.js");
         fileStream.pipe(response);
-    } else if (request.url.pathname.match(/^\/(conf(\.js)?)?$/i)) {
+    } else if (request.url.pathname === '/jquery') {
         response.writeHead(200, {'Content-Type': 'text/javascript'});
-        response.end('conf = "ws://'+app.conf.host+":"+webSocketsServerPort+'";');
+        var fileStream = fs.createReadStream(__dirname+"/public/jquery.js");
+        fileStream.pipe(response);
+    } else if (request.url.pathname === '/conf') {
+        response.writeHead(200, {'Content-Type': 'text/javascript'});
+        response.end('var conf = "ws://'+app.conf.host+":"+webSocketsServerPort+'";');
     } else if (request.url.pathname === '/status') {
         response.writeHead(200, {'Content-Type': 'application/json'});
         var responseObject = {
@@ -195,6 +199,7 @@ app.on("admin",function(data){
 		case status.admin.shutdown:
 			/*Shutdown*/
 			console.log("Receive shutdown command...bye");
+			app.close();
 			process.exit();
 			break;
 	};
