@@ -1,6 +1,49 @@
 @font-face {
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-style: normal;
+  src: url('../fonts/Open-Sans-regular/Open-Sans-regular.eot');
+  src: url('../fonts/Open-Sans-regular/Open-Sans-regular.eot?#iefix') format('embedded-opentype'),
+       local('Open Sans'),
+       local('Open-Sans-regular'),
+       url('../fonts/Open-Sans-regular/Open-Sans-regular.woff2') format('woff2'),
+       url('../fonts/Open-Sans-regular/Open-Sans-regular.woff') format('woff'),
+       url('../fonts/Open-Sans-regular/Open-Sans-regular.ttf') format('truetype'),
+       url('../fonts/Open-Sans-regular/Open-Sans-regular.svg#OpenSans') format('svg');
+}
+
+@font-face {
+  font-family: 'Raleway';
+  font-weight: 300;
+  font-style: normal;
+  src: url('../fonts/Raleway-300/Raleway-300.eot');
+  src: url('../fonts/Raleway-300/Raleway-300.eot?#iefix') format('embedded-opentype'),
+       local('Raleway Light'),
+       local('Raleway-300'),
+       url('../fonts/Raleway-300/Raleway-300.woff2') format('woff2'),
+       url('../fonts/Raleway-300/Raleway-300.woff') format('woff'),
+       url('../fonts/Raleway-300/Raleway-300.ttf') format('truetype'),
+       url('../fonts/Raleway-300/Raleway-300.svg#Raleway') format('svg');
+}
+
+@font-face {
+  font-family: 'Raleway';
+  font-weight: 400;
+  font-style: normal;
+  src: url('../fonts/Raleway-regular/Raleway-regular.eot');
+  src: url('../fonts/Raleway-regular/Raleway-regular.eot?#iefix') format('embedded-opentype'),
+       local('Raleway'),
+       local('Raleway-regular'),
+       url('../fonts/Raleway-regular/Raleway-regular.woff2') format('woff2'),
+       url('../fonts/Raleway-regular/Raleway-regular.woff') format('woff'),
+       url('../fonts/Raleway-regular/Raleway-regular.ttf') format('truetype'),
+       url('../fonts/Raleway-regular/Raleway-regular.svg#Raleway') format('svg');
+}
+
+
+@font-face {
 	font-family: 'linecons';
-	src:url('fonts/linecons.eot');
+	src:url('../fonts/linecons.eot');
 }
 @font-face {
 	font-family: 'linecons';

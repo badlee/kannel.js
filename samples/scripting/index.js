@@ -30,18 +30,18 @@ var VMs = {};
 Object.defineProperties(languageTypes, {
 	initVM : {
 		value: function() {
-				for(var i in this){
-					VMs[this[i]] = require('child_process').fork(path.join(__dirname,'vm.js'),[this[i]]);
-					VMs[this[i]].on('message', function(m) {
-						if (m.type === 'sms'){
-							stats.sent++;
-							var id = new Buffer(m.receiver).toString();
-							stats.byNum[id] = stats.byNum[id] || {sent : 0, received:0};
-							stats.byNum[id].sent++;
-							app.sendSMS(m);	
-						}
-					});
-				}
+			for(var i in this){
+				VMs[this[i]] = require('child_process').fork(path.join(__dirname,'vm.js'),[this[i]]);
+				VMs[this[i]].on('message', function(m) {
+					if (m.type === 'sms'){
+						stats.sent++;
+						var id = new Buffer(m.receiver).toString();
+						stats.byNum[id] = stats.byNum[id] || {sent : 0, received:0};
+						stats.byNum[id].sent++;
+						app.sendSMS(m);	
+					}
+				});
+			}
 		},
 		writable: false,
 		enumerable: false,
@@ -50,12 +50,12 @@ Object.defineProperties(languageTypes, {
 	execScript : {
 		value: function(file,sms,keyword) {
 		var tmp = (path.extname(file) in this) ? this[path.extname(file)] : false;
-				if(tmp){
-					sms.type = "sms";
-					sms.file = file;
-					sms.keywords = keyword;
-					VMs[tmp].send(sms);
-				}
+			if(tmp){
+				sms.type = "sms";
+				sms.file = file;
+				sms.keywords = keyword;
+				VMs[tmp].send(sms);
+			}
 		},
 		writable: false,
 		enumerable: false,
@@ -111,9 +111,10 @@ app.on("admin",function(data){
 	switch(data.command){
 		case status.admin.shutdown:
 			/*Shutdown*/
-			console.log("Receive shutdown command...retry to connect every 10s");
+			console.log("Receive shutdown command...");
 			app.close();
-			retryToConnect();
+			process.exit();
+			//retryToConnect();
 			break;
 	};
 });
@@ -126,7 +127,7 @@ app.on("sms",function(data){
 	stats.received++;
 	/*end stats*/
 	var keyword = data.msgdata.toString().split(" ");
-	var dir = path.join(__dirname,"public","scripts");
+	var dir = path.join(__dirname,"scripts");
 	filename = fs.readdirSync(dir).filter(function(file){
 		return (new RegExp(keyword[0])).test(path.basename(file,path.extname(file)));
 	})[0];

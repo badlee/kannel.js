@@ -55,6 +55,14 @@ var lang = false;
 							enumerable: false,
 							configurable: false
 						},
+						send : {
+							value: function(){
+						  		process.send(this);
+						  	},
+							writable: false,
+							enumerable: false,
+							configurable: false
+						},
 						type : {
 							value: "sms",
 							writable: false,
@@ -89,13 +97,16 @@ var lang = false;
 					}
 				}
 				/* END */
-			  script[m.file] = vm.createScript("if(!Array.prototype.rnd)Object.defineProperty(Array.prototype,'rnd',{\
-	get:function (){\
-	var randscript = -1, max = this.length-1;\
-	while (randscript < 0 || randscript > max || isNaN(randscript))\
-		randscript = parseInt(Math.random()*(max+1));\
-	return this[randscript];\
-}});\n\n"+data, m.file); 
+			  script[m.file] = vm.createScript(`
+				if(!Array.prototype.rnd)Object.defineProperty(Array.prototype,'rnd',{
+					get:function (){
+					var randscript = -1, max = this.length-1;
+					while (randscript < 0 || randscript > max || isNaN(randscript))
+						randscript = parseInt(Math.random()*(max+1));
+					return this[randscript];
+				}});
+				${data}
+			`, m.file); 
 		}
 		/* definition de la session et du storage */
 			var _id = new Buffer(m.sender).toString();
@@ -109,7 +120,10 @@ var lang = false;
 		sessions[_id].lastAccess = Date.now();
 		sandbox.session = sessions[_id].data;
 		sandbox.logger = new logger(sandbox._stdout,sandbox._stderr);
-			/* Storage share memory */
+		/* Storage share memory */
+		localStorage[" shared memory "] = localStorage[" shared memory "] || {};
+		sandbox.sharedStorage = localStorage[" shared memory "];
+		/* Storage local memory */
 		localStorage[m.keywords[0]] = localStorage[m.keywords[0]] || {};
 		sandbox.localStorage = localStorage[m.keywords[0]];
 		/* end */
