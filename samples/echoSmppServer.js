@@ -1,3 +1,5 @@
+process.title = 'echoSMPP';
+
 var user = {
 	id : "oshimin",
 	password : "badlee",
