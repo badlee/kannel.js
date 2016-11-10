@@ -85,9 +85,7 @@ var lang = false;
  		if(!script[m.file]){
 			try{data = fs.readFileSync(m.file);}catch(e){return sendError(e);}
 				
-				/*
-					Compilation to JS
-				*/
+				/* Compilation to JS */
 				if(lang){
 					try{
 						data = lang.compile(data.toString(),{filename:path.basename(m.file)});					
@@ -97,16 +95,19 @@ var lang = false;
 					}
 				}
 				/* END */
-			  script[m.file] = vm.createScript(`
-				if(!Array.prototype.rnd)Object.defineProperty(Array.prototype,'rnd',{
-					get:function (){
-					var randscript = -1, max = this.length-1;
-					while (randscript < 0 || randscript > max || isNaN(randscript))
-						randscript = parseInt(Math.random()*(max+1));
-					return this[randscript];
-				}});
-				${data}
-			`, m.file); 
+			  script[m.file] = vm.createScript(
+				"if(!Array.prototype.rnd){"+
+				"	Object.defineProperty(Array.prototype,'rnd',{"+
+				"		get:function (){"+
+				"			var randscript = -1, max = this.length-1;"+
+				"			while (randscript < 0 || randscript > max || isNaN(randscript))"+
+				"				randscript = parseInt(Math.random()*(max+1));"+
+				"			return this[randscript];"+
+				"		}"+
+				"	});"+
+				"};\n\n"+
+				data
+			, m.file); 
 		}
 		/* definition de la session et du storage */
 			var _id = new Buffer(m.sender).toString();
