@@ -4,6 +4,7 @@ process.title = 'hellobox';
 sys = require("util");
 var kannel = require('../../lib');
 var status = kannel.status;
+var iconv = require("iconv-lite");
 
 /*
 
@@ -37,16 +38,12 @@ var app = new kannel.smsbox({
 //var smsbox = app.conf.smsbox[app.conf.smsbox.length-1];
 //var core = app.conf.core[app.conf.core.length-1];
 
-app.on("admin",function(data){
-	switch(data.command){
-		case status.admin.shutdown:
-			/*Shutdown*/
-			console.log("Receive shutdown command...bye");
-			app.close();
-			process.exit();
-			break;
-	};
-})
+app.on("admin shutdown",function(data){
+	/*Shutdown*/
+	console.log("Receive shutdown command...bye");
+	app.close();
+	process.exit();
+});
 
 app.on('connect',function(){
 	console.log("hellobox is connected to "+app.conf["host"]+":"+app.conf['port']);
@@ -63,10 +60,11 @@ app.on('connect',function(){
             time : Math.floor((new Date).getTime()/1000),
             id   : data.id
         });
-		this.sendSMS({
+		app.sendSMS({
 		  sender: data.receiver,
 		  receiver: data.sender,
-		  msgdata: 'echo <-> '+data.msgdata
+		  msgdata: 'hello '+data.sender,
+		  sms_type: status.sms.mt_reply
 		});	
 	});
 	app.on("error",function(e){
@@ -82,11 +80,11 @@ app.on('connect',function(){
 				app.write("sms",{
 				  sender: keyword[1],
 				  receiver: keyword[2] ,
-				  msgdata: require("iconv-lite").encode(keyword[3],"ucs2"),
+				  msgdata: iconv.encode(keyword[3],"ucs2"),
 				  time: Math.floor((new Date).getTime()/1000),
 				  coding : 2,
-				  charset : 'UTF-16BE',
-				  sms_type: status.sms.mt_reply
+				  charset : 'UTF-16BE', // ucs2
+				  sms_type: status.sms.mo
 				});
 			  break;
 		  }

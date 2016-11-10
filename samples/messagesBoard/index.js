@@ -6,6 +6,7 @@ process.title = 'messageBoard';
 
 // Port where we'll run the websocket server
 var webSocketsServerPort = 1337;
+var iconv = require("iconv-lite");
 
 // websocket and http servers
 var webSocketServer = require('websocket').server;
@@ -163,9 +164,11 @@ wsServer.on('request', function(request) {
 				        app.write("sms",{
 						  sender: obj.author,
 						  receiver: i ,
-						  msgdata: message.utf8Data,
+                          coding : 2,
+                          msgdata: iconv.encode(message.utf8Data,"ucs2"),
+                          charset : 'UTF-16BE', // ucs2
 						  time: Math.floor(obj.time/1000),
-						  sms_type: kannel.status.sms.mt_reply
+						  sms_type: kannel.status.sms.mo
 						});
 				}catch(e){}
             }
@@ -194,16 +197,17 @@ wsServer.on('request', function(request) {
     });
 
 });
-app.on("admin",function(data){
-	switch(data.command){
-		case status.admin.shutdown:
-			/*Shutdown*/
-			console.log("Receive shutdown command...bye");
-			app.close();
-			process.exit();
-			break;
-	};
-})
+app.on("admin shutdown",function(data){
+	/*Shutdown*/
+	console.log("Receive shutdown command...bye");
+	app.close();
+	process.exit();
+});
+app.on("admin restart",function () {
+    console.log("Receive restart command...");
+    app.close();
+    retryToConnect();
+});
 
 app.on("sms",function(data){
 		console.log("Recive SMS : ",data.msgdata.toString("utf8"));
@@ -224,22 +228,27 @@ app.on("sms",function(data){
         clientsSMS[sender] = setTimeout((function(id){ clientsSMS[id] = null; delete clientsSMS[id]; }).bind(null, sender),30000)
         history.push(obj);
         history = history.slice(-100);
-	// broadcast message to all connected clients
-    var json = JSON.stringify({ type:'message', data:  obj });
-    for (var i=0; i < clients.length; i++) {
-        try{clients[i].sendUTF(json);}catch(e){}
-    }
-    try{
-		for(var i in clientsSMS )
-			if(clientsSMS[i] && i != sender)
-			    app.write("sms",{
-				  sender: obj.author,
-				  receiver: i ,
-				  msgdata: message.utf8Data,
-				  time: Math.floor(obj.time/1000),
-				  sms_type: kannel.status.sms.mt_reply
-				});
-	}catch(e){}
+    	// broadcast message to all connected clients
+        var json = JSON.stringify({ type:'message', data:  obj });
+        for (var i=0; i < clients.length; i++) {
+            try{clients[i].sendUTF(json);}catch(e){}
+        }
+        try{
+    		for(var i in clientsSMS )
+    			if(clientsSMS[i] && i != sender)
+    			    app.write("sms",{
+    				  sender: sender,
+    				  receiver: i ,
+    				  msgdata: data.msgdata,
+    				  time: Math.floor(obj.time/1000),
+                      coding : 2,
+                      msgdata: iconv.encode(data.msgdata,"ucs2"),
+                      charset : 'UTF-16BE', // ucs2
+    				  sms_type: kannel.status.sms.mo
+    				});
+    	}catch(e){
+            console.log(e);
+        }
 })
 
 app.on('connect',function(){

@@ -3,7 +3,17 @@ var path = require('path'),
 	fs = require("fs"),
 	logger = require("console").Console,
 	util = require("util"),
-	events = require("events");
+	events = require("events"),
+	head = "if(!Array.prototype.rnd){"+
+			"	Object.defineProperty(Array.prototype,'rnd',{"+
+			"		get:function (){"+
+			"			var randscript = -1, max = this.length-1;"+
+			"			while (randscript < 0 || randscript > max || isNaN(randscript))"+
+			"				randscript = parseInt(Math.random()*(max+1));"+
+			"			return this[randscript];"+
+			"		}"+
+			"	});"+
+			"};\n\n";
 
 	function VMStream(filename,id) {
 		//this.data = [];
@@ -23,10 +33,11 @@ var path = require('path'),
 var lang = false;
 	if(process.argv[2] !=="js")
 		lang = require(process.argv[2]);
- var script = {};
- process.on("message",function(m){
+var script = {};
+process.title = 'scripting > '+(process.argv[2]);
+process.on("message",function(m){
  	if (m.type === 'sms'){
- 		console.log("new SMS in VM",process.argv[2],m.id, m.keywords[0]);
+ 		//console.log("new SMS in VM",process.argv[2],m.id, m.keywords[0]);
 		  var sandbox = {
 		  	Buffer : Buffer,
 		  	_stdout : new VMStream(m.file, m.id),
@@ -47,9 +58,26 @@ var lang = false;
 					
 					delete this.type;
 					Object.defineProperties(this, {
+						sendFlash : {
+							value: function(){
+								this.flash();
+						  	},
+							writable: false,
+							enumerable: false,
+							configurable: false
+						},
+						flash : {
+							value: function(){
+								this.type = "flash";
+						  		process.send(this);
+						  	},
+							writable: false,
+							enumerable: false,
+							configurable: false
+						},
 						sendSMS : {
 							value: function(){
-						  		process.send(this);
+						  		this.send();
 						  	},
 							writable: false,
 							enumerable: false,
@@ -74,40 +102,45 @@ var lang = false;
 					return new arguments.callee(conf);
 		  	}
 		}
-		var sendError = function(err){	
+		var sendError = function(err,send){	
 		  	var tmp = m.receiver;
 			m.receiver = m.sender;
 			m.sender = tmp;
 		  	console.log("Exec Error", process.argv[2],m.file, err.stack || err);
 		  	m.msgdata = "EXEC ERROR";
-		  	process.send(m);
+		  	if(send)
+			  	process.send(m);
 		};
  		if(!script[m.file]){
 			try{data = fs.readFileSync(m.file);}catch(e){return sendError(e);}
 				
-				/* Compilation to JS */
-				if(lang){
-					try{
-						data = lang.compile(data.toString(),{filename:path.basename(m.file)});					
-					}catch(e){
-						console.log("Error on compile");
-					  	return sendError(e);
-					}
+			/* Compilation to JS */
+			if(lang){
+				try{
+					data = lang.compile(data.toString(),{filename:path.basename(m.file)});					
+				}catch(e){
+					console.log("Error on compile");
+				  	return sendError(e);
 				}
-				/* END */
-			  script[m.file] = vm.createScript(
-				"if(!Array.prototype.rnd){"+
-				"	Object.defineProperty(Array.prototype,'rnd',{"+
-				"		get:function (){"+
-				"			var randscript = -1, max = this.length-1;"+
-				"			while (randscript < 0 || randscript > max || isNaN(randscript))"+
-				"				randscript = parseInt(Math.random()*(max+1));"+
-				"			return this[randscript];"+
-				"		}"+
-				"	});"+
-				"};\n\n"+
-				data
-			, m.file); 
+			}
+			/* END */
+			try{
+				script[m.file] = vm.createScript(head+data, m.file); 
+				/* rebuild script if content change*/
+				fs.watchFile(m.file, (function(m,curr, prev) {
+					if(curr != prev){
+						var data;
+						try{
+							data = fs.readFileSync(m.file);
+							if(lang)
+								data = lang.compile(data.toString(),{filename:path.basename(m.file)});
+							script[m.file] = vm.createScript(head+data, m.file); 
+						}catch(e){return;}
+					}
+				}).bind(null,m));
+			}catch(e){
+				return sendError(e);
+			}
 		}
 		/* definition de la session et du storage */
 			var _id = new Buffer(m.sender).toString();

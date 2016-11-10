@@ -1,5 +1,5 @@
 // Optional. You will see this name in eg. 'ps' or 'top' command
-process.title = 'scriping';
+process.title = 'scripting';
 
 
 sys = require("util");
@@ -10,39 +10,63 @@ var http = require('http'),
     url = require('url'),
     path = require('path'),
     fs = require('fs'),
-    app = {};
+    iconv = require("iconv-lite"),
+    app = {},
+    server,
+    PORT = 1337,
+    mimeTypes = {
+	    "html": "text/html",
+	    "jpeg": "image/jpeg",
+	    "jpg": "image/jpeg",
+	    "png": "image/png",
+	    "js": "text/javascript",
+	    "css": "text/css"
+	},
+	stats = {
+		received : 0,
+		sent : 0,
+		byNum : {}
+	},
+	languageTypes = {
+	    ".js": "js",
+	    ".coffee": "coffee-script"
+	},
+	VMs = {};
 
-var mimeTypes = {
-    "html": "text/html",
-    "jpeg": "image/jpeg",
-    "jpg": "image/jpeg",
-    "png": "image/png",
-    "js": "text/javascript",
-    "css": "text/css"
-};
-    
-var stats = {
-	received : 0,
-	sent : 0,
-	byNum : {}
-}
-var languageTypes = {
-    ".js": "js",
-    ".coffee": "coffee-script"
-};
-var VMs = {};
 Object.defineProperties(languageTypes, {
 	initVM : {
 		value: function() {
 			for(var i in this){
+				if(!this.hasOwnProperty(i)) continue;
 				VMs[this[i]] = require('child_process').fork(path.join(__dirname,'vm.js'),[this[i]]);
 				VMs[this[i]].on('message', function(m) {
+					var flash = 0;
 					if (m.type === 'sms'){
+						m.type = "sms";
+						flash = 1;
+					}
+
+					if (m.type === 'sms'){
+						for (var I in m) {
+							if(  m.hasOwnProperty(I) &&  m[I] && m[I].type === "Buffer"){
+								m[I] = new Buffer(m[I].data);
+							}
+						}
 						stats.sent++;
-						var id = new Buffer(m.receiver).toString();
+						var msg = {
+						  sender: m.sender,
+						  receiver: m.receiver,
+						  msgdata: iconv.encode(m.msgdata,'ucs2'),
+						  time: Math.floor((new Date).getTime()/1000),
+						  coding : 2,
+						  charset : 'UTF-16BE', // ucs2
+						  sms_type: status.sms.mo,
+						  mclass : flash
+						},id = new Buffer(m.receiver).toString();
 						stats.byNum[id] = stats.byNum[id] || {sent : 0, received:0};
 						stats.byNum[id].sent++;
-						app.sendSMS(m);	
+						console.log("REPLY TO [",msg.receiver.toString('utf8'),"] \n\t> ",msg.msgdata.toString('utf8'));
+						app.write("sms",msg);
 					}
 				});
 			}
@@ -92,6 +116,7 @@ app = new kannel.smsbox(__dirname+"/../../kannel/kannel.conf?"+
 	"admin_pwd=$.core[-1:].admin-password&"
 );
 
+PORT = app.conf.http_port || PORT;
 /*
 //manual config
 var app = new kannel.smsbox({
@@ -111,6 +136,8 @@ var retryToConnect = function(){
 	},10000);
 	return retryConnect;
 }
+
+
 app.on("admin",function(data){
 	switch(data.command){
 		case status.admin.shutdown:
@@ -118,13 +145,34 @@ app.on("admin",function(data){
 			console.log("Receive shutdown command...bye");
 			app.close();
 			process.exit();
-			//retryToConnect();
 			break;
+		case status.admin.restart:
+			console.log("Receive restart command...");
+			app.close();
+			retryToConnect();
+			break;
+		case status.admin.identify:
+			app.identification();
+			break;
+		case status.admin.suspend:
+			if(server && server.listening)
+				server.close();
+			break;
+		case status.admin.resume:
+			if(server && !server.listening)
+				server.listen(PORT);
+			break;
+
 	};
 });
 
 app.on("sms",function(data){
+	if(!server || (server && !server.listening)) return app.write("ack",{
+		nack : status.ack.failed_tmp,
+		id   : data.id
+	});
 	/*Stats*/
+	console.log("Recive SMS");
 	var id = data.sender.toString();
 	stats.byNum[id] = stats.byNum[id] || {sent : 0, received:0};
 	stats.byNum[id].received++;
@@ -137,7 +185,7 @@ app.on("sms",function(data){
 	})[0];
 	
 	if(!filename){
-			console.log("FAILS SMS ", data.id.toString());
+		console.log("FAILS SMS ", data.id.toString());
 		app.write("ack",{
 			nack : status.ack.failed,
 			id   : data.id
@@ -173,7 +221,7 @@ var readFile = function(filename,res,uri){
     });
     fileStream.pipe(res);
 }
-var server =  http.createServer(function(req, res) {
+server =  http.createServer(function(req, res) {
     var uri = url.parse(req.url).pathname;
     var filename = path.join(__dirname,"public", uri);
 	if((/^\/info\.json$/i).test(uri)){
@@ -238,8 +286,11 @@ var server =  http.createServer(function(req, res) {
 });
 
 app.on("error",function(e){
-    if(["EPIPE","ECONNREFUSED"].indexOf(e.code) > -1)
-		retryToConnect();
+    if(["EPIPE","ECONNREFUSED"].indexOf(e.code) > -1){
+		console.log(""+e);
+		app.close();
+		process.exit();
+    }
 })
 
 
@@ -250,4 +301,4 @@ app.on('connect',function(){
 });
 app.connect();
 
-server.listen(app.conf.http_port || 1337);
+server.listen(PORT);
