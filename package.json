@@ -16,7 +16,11 @@
     "smpp",
     "bearebox",
     "smsbox",
-    "message"
+    "message",
+    "gateways",
+    "vas",
+    "gateway",
+    "msg"
   ],
   "engines": {
     "node": ">=0.4.0"
