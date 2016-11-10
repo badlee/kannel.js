@@ -2,12 +2,12 @@
 [![NPM](https://nodei.co/npm/kannel.png?downloads=true&stars=true)](https://nodei.co/npm/kannel/) [![NPM](https://nodei.co/npm-dl/kannel.png?months=1)](https://nodei.co/npm/kannel/)
 
 ### Installation
-<pre>
+```sh
 npm install kannel
-</pre>
+```
 
 ### Connect to bearerbox using object config
-<pre>
+```js
 	var kannel = require('kannel'),
 	    app = new kannel.smsbox({
 			host : '192.168.10.3', // bearerbox host - default '127.0.0.1'
@@ -19,10 +19,10 @@ npm install kannel
 		console.log("hello box is connected to "+app.conf["host"]+":"+app.conf['port']);
 	});
 	app.connect();
-</pre>
+```
 
 ### Connect to bearerbox using kannel config file information
-<pre>
+```js
 	var kannel = require('kannel'),
 	    app = new kannel.smsbox("kannel/kannel.conf?"+
 	    	"host=$..bearerbox-host&"+
@@ -34,12 +34,12 @@ npm install kannel
 		console.log("hello box is connected to "+app.conf["host"]+":"+app.conf['port']);
 	});
 	app.connect();
-</pre>
+```
 
 The parser use [JSONpath's syntax](http://goessner.net/articles/JsonPath/) for access to the json representation of the conf file.
 
 ### Receive / Send SMS
-<pre>
+```js
 	var kannel = require('kannel'),
 	    app = new kannel.smsbox("kannel/kannel.conf?"+
 	    	"host=$..bearerbox-host&"+
@@ -64,11 +64,11 @@ The parser use [JSONpath's syntax](http://goessner.net/articles/JsonPath/) for a
 		});	
 	});
 	app.connect();
-</pre>
+```
 
 
 ### Send a delivery to SMS
-<pre>
+```js
 	var kannel = require('kannel'),
 	    app = new kannel.smsbox("kannel/kannel.conf?"+
 	    	"host=$..bearerbox-host&"+
@@ -92,11 +92,12 @@ The parser use [JSONpath's syntax](http://goessner.net/articles/JsonPath/) for a
 		});
 	});
 	app.connect();
-</pre>
+```
 
 
 ### Receive ADMIN command from bearerbox
-<pre>
+
+```js
 	var kannel = require('kannel'),
 	    app = new kannel.smsbox("kannel/kannel.conf?"+
 	    	"host=$..bearerbox-host&"+
@@ -121,19 +122,31 @@ The parser use [JSONpath's syntax](http://goessner.net/articles/JsonPath/) for a
 		};
 	});
 	app.connect();
-</pre>
+```
 
 ### How test samples
 Run bearebox
-<pre>
+
+```sh
 	$ cd path/to/kannel.js
 	$ sudo bearerbox kannel/kannel.conf
-</pre>
+```
+
+
+### How Test scripting SMS samples
+Run fakesmsc
+
+```sh
+	$ sudo bearerbox -m 1 "FROM TO text hello oshimin" # to
+```
+
+
 
 
 ##### Test hellobox (REPL sms)
 ![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/hello.png)
-<pre>
+
+```sh
     $ cd path/to/kannel.js
     $ node samples/hellobox
     hello box is connected to 127.0.0.1:14001
@@ -141,28 +154,30 @@ Run bearebox
         SMS > FROM TO Your Message
         Exp:  070805 09505 hello SMS.
     SMS > 
-</pre>
+```
 Type your SMS in REPL console, the server send a echo responce for each recieved sms. 
 
 
 ##### Test messagesBoard (websocket and sms chat)
 ![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/messageBoard.png)
-<pre>
+
+```sh
 	$ cd path/to/kannel.js
 	$ node samples/messagesBoard
 	Fri Apr 11 2014 04:09:22 GMT+0100 (WAT) Server is listening on port 14014
-</pre>
+```
 Goto to http://127.0.0.1:14014,
 Type your name, your message or send sms for chat, Enjoy your chat.
 
 
 ##### Test scripting (coffeeScript and javascript VAS applications)
 ![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/scripting.png)
-<pre>
+
+```sh
 	$ cd path/to/kannel.js
 	$ node samples/scripting
 	Fri Apr 11 2014 04:09:22 GMT+0100 (WAT) Server is listening on port 14014
-</pre>
+```
 Goto to http://127.0.0.1:14014, for show the dashboard.
 Goto to samples/scripting/public/scripts for sms service.
 The SMS services is identified by the name of script whitout extension. ( Ex : "FUTURE" represent futur.coffee, "COUNT" represent count.js )
