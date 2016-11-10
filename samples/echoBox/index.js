@@ -84,6 +84,9 @@ if (cluster.isMaster) {
   });
   app.on("error",function(e){
     console.log("Error worker#{"+ cluster.worker.id +"} : ",e.stack || e);
+    if(["EPIPE","ECONNREFUSED"].indexOf(e.code) > -1)
+      process.send("kill");
+
   });
   app.on('connect',function(){
     console.log("echoBox worker #{"+ cluster.worker.id +"} is connected to "+app.conf["host"]+":"+app.conf['port']);  

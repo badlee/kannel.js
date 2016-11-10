@@ -136,6 +136,17 @@ Run bearebox
 	$ sudo bearerbox kannel/kannel.conf
 ```
 
+##### Test echobox (echo server clusterized)
+![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/echo.png)
+
+```sh
+    $ cd path/to/kannel.js
+    $ node samples/echoBox
+	echoBox worker #{1} is connected to 127.0.0.1:14001
+	echoBox worker #{3} is connected to 127.0.0.1:14001
+	echoBox worker #{2} is connected to 127.0.0.1:14001
+	echoBox worker #{4} is connected to 127.0.0.1:14001
+```
 
 ##### Test hellobox (REPL sms)
 ![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/hello.png)
