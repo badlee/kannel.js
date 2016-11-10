@@ -36,7 +36,7 @@ npm install kannel
 	app.connect();
 </pre>
 
-The parser use [JSONpath](http://goessner.net/articles/JsonPath/) for access to the json representation of the conf file.
+The parser use [JSONpath's syntax](http://goessner.net/articles/JsonPath/) for access to the json representation of the conf file.
 
 ### Receive / Send SMS
 <pre>
