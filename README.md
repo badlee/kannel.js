@@ -133,16 +133,6 @@ Run bearebox
 ```
 
 
-### How Test scripting SMS samples
-Run fakesmsc
-
-```sh
-	$ sudo bearerbox -m 1 "FROM TO text hello oshimin" # to
-```
-
-
-
-
 ##### Test hellobox (REPL sms)
 ![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/hello.png)
 
@@ -193,11 +183,25 @@ Paramametres
 	text : SMS to send
 
 Response
-	Success : http code 200 
+	Success : http code 200
 	Fails	: http code 403
 
 Exemple : http://127.0.0.1:14014/cgi-bin/sendsms?from=07086&to=05026&text=Test
 </pre>
+
+Test scripting SMS samples `$ sudo fakesmsc "FROM TO text script"`
+
+```sh
+	$ ## Exemple of test
+	$ sudo fakesmsc "0708 6061 text hello oshimin" # test hello.js service
+	$ sudo fakesmsc "1120 8080 text futur" # Test futur services
+	$ sudo fakesmsc "0708 8080 text count" # Test Count
+	$ sudo fakesmsc "FROM TO text vote A" # Test de vote
+	$ sudo fakesmsc "FROM TO text vote B" # Test de vote
+	$ sudo fakesmsc "FROM TO text vote C" # Test de vote
+	$ sudo fakesmsc "FROM TO text vote D" # Test de vote
+```
+
 
 ### License
 
