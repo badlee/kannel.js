@@ -59,13 +59,7 @@ app.on('connect',function(){
             nack : kannel.status.ack.success,
             time : Math.floor((new Date).getTime()/1000),
             id   : data.id
-        });
-		app.sendSMS({
-		  sender: data.receiver,
-		  receiver: data.sender,
-		  msgdata: 'hello '+data.sender,
-		  sms_type: status.sms.mt_reply
-		});	
+        });	
 	});
 	app.on("error",function(e){
 		console.log("Error",e.stack || e);
