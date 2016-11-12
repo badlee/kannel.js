@@ -148,13 +148,13 @@ Run bearebox
 	echoBox worker #{4} is connected to 127.0.0.1:14001
 ```
 
-##### Test hellobox (REPL sms)
-![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/hello.png)
+##### Test replbox (REPL sms)
+![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/repl.png)
 
 ```sh
     $ cd path/to/kannel.js
-    $ node samples/hellobox
-    hello box is connected to 127.0.0.1:14001
+    $ node samples/replbox
+    replbox is connected to 127.0.0.1:14001
     for send a message tip 
         SMS > FROM TO Your Message
         Exp:  070805 09505 hello SMS.

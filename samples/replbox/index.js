@@ -1,5 +1,5 @@
 // Optional. You will see this name in eg. 'ps' or 'top' command
-process.title = 'hellobox';
+process.title = 'replbox';
 
 sys = require("util");
 var kannel = require('../../lib');
@@ -30,7 +30,7 @@ var app = new kannel.smsbox(
 /*
 //manual config
 var app = new kannel.smsbox({
-	id   : "helloBox", // smsc id
+	id   : "replbox", // smsc id
 	frequence : 1 // hearbeat
 });
 */
@@ -46,7 +46,7 @@ app.on("admin shutdown",function(data){
 });
 
 app.on('connect',function(){
-	console.log("hellobox is connected to "+app.conf["host"]+":"+app.conf['port']);
+	console.log("replbox is connected to "+app.conf["host"]+":"+app.conf['port']);
 	console.log("for send a message tip \n\tSMS > FROM TO Your Message\n\tExp:  070805 09505 hello SMS.");
 	var readline = require('readline'),
     rl = readline.createInterface(process.stdin, process.stdout);

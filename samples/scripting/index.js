@@ -167,10 +167,16 @@ app.on("admin",function(data){
 });
 
 app.on("sms",function(data){
-	if(!server || (server && !server.listening)) return app.write("ack",{
-		nack : status.ack.failed_tmp,
-		id   : data.id
-	});
+	if(!server || (server && !server.listening))
+		return app.write("ack",{
+			nack : status.ack.failed_tmp,
+			id   : data.id
+		});
+	else
+		app.write("ack",{
+			nack : status.ack.buffered,
+			id   : data.id
+		});
 	/*Stats*/
 	console.log("Recive SMS");
 	var id = data.sender.toString();
