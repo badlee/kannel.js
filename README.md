@@ -240,13 +240,13 @@ Before start you must now It :
   - It's a kannel.js is a librarie who allow to create a smsbox remplacement for more efficient SMS VAS application.
   - The new infrastructure become : SMSC <-> bearerbox <-> yourNodeJsApplication instead of SMSC <-> bearerbox <-> smsbox <-> yourNodeJsApplication
   - For test processing it you must have
-    - [git](https://git-scm.com/) for clone this repository
+    - [git](https://git-scm.com/) for clone this repository.
       For install go to [here](https://git-scm.com/)
-    - [nodejs](https://nodejs.org) for run your application
+    - [nodejs](https://nodejs.org) for run your application.
       For install go to [here](https://nodejs.org)
-    - [kannel](http://kannel.org/) for connect to a wireless provider
+    - [kannel](http://kannel.org/) for connect to a wireless provider.
       For install : `sudo apt-get install kannel`
-    - [kannel-extras](http://kannel.org/download.shtml#stable) for send sms to your application  
+    - [kannel-extras](http://kannel.org/download.shtml#stable) for send sms to your application.
       For install : `sudo apt-get install kannel-extras`
 
 #### How start a sample
