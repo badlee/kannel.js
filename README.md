@@ -136,9 +136,15 @@ Run bearebox
 	$ sudo bearerbox kannel/kannel.conf
 ```
 
-##### Test echobox (echo server clusterized)
+#### Test echobox (echo server clusterized)
 ![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/echo.png)
 
+##### Usage
+```sh
+    $ node samples/echoBox [path to kannel.conf]
+```
+
+##### Example
 ```sh
     $ cd path/to/kannel.js
     $ node samples/echoBox
@@ -148,8 +154,15 @@ Run bearebox
 	echoBox worker #{4} is connected to 127.0.0.1:14001
 ```
 
-##### Test replbox (REPL sms)
+#### Test replbox (REPL sms)
 ![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/repl.png)
+
+##### Usage
+```sh
+    $ node samples/replbox [path to kannel.conf]
+```
+
+##### Example
 
 ```sh
     $ cd path/to/kannel.js
@@ -163,8 +176,15 @@ Run bearebox
 Type your SMS in REPL console, the server send a echo responce for each recieved sms. 
 
 
-##### Test messagesBoard (websocket and sms chat)
+#### Test messagesBoard (websocket and sms chat)
 ![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/messageBoard.png)
+
+##### Usage
+```sh
+    $ node samples/messagesBoard [path to kannel.conf]
+```
+
+##### Example
 
 ```sh
 	$ cd path/to/kannel.js
@@ -175,12 +195,20 @@ Goto to http://127.0.0.1:14014,
 Type your name, your message or send sms for chat, Enjoy your chat.
 
 
-##### Test scripting (coffeeScript and javascript VAS applications)
+#### Test scripting (coffeeScript and javascript VAS applications)
 ![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/scripting.png)
+
+##### Usage
+```sh
+    $ node samples/scripting [path to kannel.conf]
+```
+
+##### Example
 
 ```sh
 	$ cd path/to/kannel.js
 	$ node samples/scripting
+	scripting box is connected to 127.0.0.1:14001
 	Fri Apr 11 2014 04:09:22 GMT+0100 (WAT) Server is listening on port 14014
 ```
 Goto to http://127.0.0.1:14014, for show the dashboard.
@@ -201,22 +229,55 @@ Response
 	Success : http code 200
 	Fails	: http code 403
 
-Exemple : http://127.0.0.1:14014/cgi-bin/sendsms?from=07086&to=05026&text=Test
+Example : http://127.0.0.1:14014/cgi-bin/sendsms?from=07086&to=05026&text=Test
 </pre>
 
-Test scripting SMS samples `$ sudo fakesmsc "FROM TO text script"`
+### [Tuto] Test Kannel.js
+
+#### Prerequisite
+Before start you must now It :
+
+  - It's a kannel.js is a librarie who allow to create a smsbox remplacement for more efficient SMS VAS application.
+  - The new infrastructure become : SMSC <-> bearerbox <-> yourNodeJsApplication instead of SMSC <-> bearerbox <-> smsbox <-> yourNodeJsApplication
+  - For test processing it you must have
+    - [git](https://git-scm.com/) for clone this repository
+      For install go to [here](https://git-scm.com/)
+    - [nodejs](https://nodejs.org) for run your application
+      For install go to [here](https://nodejs.org)
+    - [kannel](http://kannel.org/) for connect to a wireless provider
+      For install : `sudo apt-get install kannel`
+    - [kannel-extras](http://kannel.org/download.shtml#stable) for send sms to your application  
+      For install : `sudo apt-get install kannel-extras`
+
+#### How start a sample
+
+Make your sur kannel is down, configured and work well (bearerbox and smsbox).
+
+  - Clone kannel.js reposotory
+    `$ git clone https://github.com/badlee/kannel.js.git`
+  - Go to in mybox
+    `$ cd kannel.js`
+  - Run a bearerbox
+    `$ bearerbox -v 0 /etc/kannel/kannel.conf 1>/tmp/bearerbox.log 2>&1 &`
+  - Run sample
+  	`$ node samples/scripting /etc/kannel/kannel.conf`
+  - If you see `scripting box is connected to ` all is ok
+
+#### Send SMS to server
+You can send directly to your shortnumber or to your connected modem. But if you want test localy you must run fakesmsc (part of kannel-extras).
+
+`$ /usr/lib/kannel/test/fakesmsc "FROM TO text script"`
 
 ```sh
-	$ ## Exemple of test
-	$ sudo fakesmsc "0708 6061 text hello oshimin" # test hello.js service
-	$ sudo fakesmsc "1120 8080 text futur" # Test futur services
-	$ sudo fakesmsc "0708 8080 text count" # Test Count
-	$ sudo fakesmsc "FROM TO text vote A" # Test de vote
-	$ sudo fakesmsc "FROM TO text vote B" # Test de vote
-	$ sudo fakesmsc "FROM TO text vote C" # Test de vote
-	$ sudo fakesmsc "FROM TO text vote D" # Test de vote
+	$ ## Example of test
+	$ /usr/lib/kannel/test/fakesmsc "0708 6061 text hello oshimin" # test hello.js service
+	$ /usr/lib/kannel/test/fakesmsc "1120 8080 text futur" # Test futur services
+	$ /usr/lib/kannel/test/fakesmsc "0708 8080 text count" # Test Count
+	$ /usr/lib/kannel/test/fakesmsc "FROM TO text vote A" # Test de vote
+	$ /usr/lib/kannel/test/fakesmsc "FROM TO text vote B" # Test de vote
+	$ /usr/lib/kannel/test/fakesmsc "FROM TO text vote C" # Test de vote
+	$ /usr/lib/kannel/test/fakesmsc "FROM TO text vote D" # Test de vote
 ```
-
 
 ### License
 

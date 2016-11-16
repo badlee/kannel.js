@@ -14,7 +14,6 @@ var http = require('http');
 var fs = require("fs");
 var kannel = require('../../lib');
 /*
-
 * load config from kannel configuration file
 * url
 	path_to_file?config
@@ -27,7 +26,13 @@ var kannel = require('../../lib');
 
   For jsonPath sample look at http://goessner.net/articles/JsonPath/
 */
-var app = new kannel.smsbox(__dirname+"/../../kannel/kannel.conf?host=$.smsbox[-1:].bearerbox-host&port=$.core[-1:].smsbox-port&id=$.smsbox[-1:].smsbox-id&frequence=$.smsbox[-1:].frequence-time&http_port=$.smsbox[-1:].sendsms-port");
+var app = new kannel.smsbox(
+    (process.argv[2] || __dirname+"/../../kannel/kannel.conf")+"?"+
+    "host=$.smsbox[-1:].bearerbox-host&"+
+    "port=$.core[-1:].smsbox-port&"+
+    "id=$.smsbox[-1:].smsbox-id&"+
+    "frequence=$.smsbox[-1:].frequence-time&"+
+    "http_port=$.smsbox[-1:].sendsms-port");
 
 webSocketsServerPort = app.conf.http_port || webSocketsServerPort;
 

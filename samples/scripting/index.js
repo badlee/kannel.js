@@ -93,7 +93,6 @@ Object.defineProperties(languageTypes, {
 
 
 /*
-
 * load config from kannel configuration file
 * url
 	path_to_file?config
@@ -106,14 +105,17 @@ Object.defineProperties(languageTypes, {
 
   For jsonPath sample look at http://goessner.net/articles/JsonPath/
 */
-app = new kannel.smsbox(__dirname+"/../../kannel/kannel.conf?"+
-	"host=$.smsbox[-1:].bearerbox-host&"+
-	"port=$.core[-1:].smsbox-port&"+
-	"id=$.smsbox[-1:].smsbox-id&"+
-	"frequence=$.smsbox[-1:].frequence-time&"+
-	"http_port=$.smsbox[-1:].sendsms-port&"+
-	"admin_port=$.core[-1:].admin-port&"+
-	"admin_pwd=$.core[-1:].admin-password&"
+app = new kannel.smsbox(
+	(process.argv[2] || __dirname+"/../../kannel/kannel.conf")+"?"+
+	"host=smsbox[-1:].bearerbox-host&"+
+	"port=core[-1:].smsbox-port&"+
+	"id=smsbox[-1:].smsbox-id&"+
+	"frequence=smsbox[-1:].frequence-time&"+
+	"http_port=smsbox[-1:].sendsms-port&"+
+	"admin_port=core[-1:].admin-port&"+
+	"users=sendsms-user&"+
+	"services=sms-service&"+
+	"admin_pwd=core[-1:].admin-password&"
 );
 
 PORT = app.conf.http_port || PORT;
@@ -303,6 +305,7 @@ app.on("error",function(e){
 app.on('connect',function(){
 	clearInterval(retryConnect);
 	console.log("scripting box is connected to "+app.conf["host"]+":"+app.conf['port']);
+	console.log(new Date+" Server is listening on port",PORT);
 	languageTypes.initVM();
 });
 app.connect();

@@ -21,7 +21,7 @@ var iconv = require("iconv-lite");
   For jsonPath sample look at http://goessner.net/articles/JsonPath/
 */
 var app = new kannel.smsbox(
-	__dirname+"/../../kannel/kannel.conf?"+
+	(process.argv[2] || __dirname+"/../../kannel/kannel.conf")+"?"+
 	"host=$.smsbox[-1:].bearerbox-host&"+
 	"port=$.core[-1:].smsbox-port&"+
 	"id=$.smsbox[-1:].smsbox-id&"+
