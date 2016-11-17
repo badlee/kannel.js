@@ -238,7 +238,7 @@ Example : http://127.0.0.1:14014/cgi-bin/sendsms?from=07086&to=05026&text=Test
 Before start you must now It :
 
   - It's a kannel.js is a librarie who allow to create a smsbox remplacement for more efficient SMS VAS application.
-  - The new infrastructure become : SMSC <-> bearerbox <-> yourNodeJsApplication instead of SMSC <-> bearerbox <-> smsbox <-> yourNodeJsApplication
+  - The new infrastructure become : SMSC <-> bearerbox <-> yourApplication instead of SMSC <-> bearerbox <-> smsbox <-> yourApplication
   - For test processing it you must have
     - [git](https://git-scm.com/) for clone this repository.
       For install go to [here](https://git-scm.com/)
