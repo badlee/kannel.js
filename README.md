@@ -1,7 +1,7 @@
-# Javascript implementation of Kannel Msg protocol
+# Javascript implementation of Kannel Box protocol
 
 ### Description
-Kannel.js is a javascript implementation of Kannel Msg protocol, it allow write some powerful SMS VAS applications or  sms gateways with kannel and nodejs.
+Kannel.js is a javascript implementation of Kannel Box protocol, it allow write some powerful SMS VAS applications or  sms gateways with kannel and node.js
 
 [![NPM](https://nodei.co/npm/kannel.png?downloads=true&stars=true)](https://nodei.co/npm/kannel/) [![NPM](https://nodei.co/npm-dl/kannel.png?months=1)](https://nodei.co/npm/kannel/)
 
@@ -65,13 +65,19 @@ The parser use [JSONpath's syntax](http://goessner.net/articles/JsonPath/) for a
 		  receiver: data.sender,
 		  msgdata: 'Hello', // string or buffer
 		  id : data.id
-		});	
+		});
+		app.sendUCS2SMS({
+		  sender: data.receiver,
+		  receiver: data.sender,
+		  msgdata: 'Bonjour, Hi, 你好, صباح الخير', // UCS2 text
+		  id : data.id
+		})
 	});
 	app.connect();
 ```
 
 
-### Send a delivery to SMS
+### Send a delivery ACK
 ```js
 	var kannel = require('kannel'),
 	    app = new kannel.smsbox("kannel/kannel.conf?"+
@@ -89,11 +95,27 @@ The parser use [JSONpath's syntax](http://goessner.net/articles/JsonPath/) for a
 			"][TO:",data.receiver.toString(),
 			"][MSG :",data.msgdata.toString(),
 		"]");
-		app.write("ack",{
-			nack : kannel.status.ack.success,
-			time :  Math.floor((new Date).getTime()/1000),
-			id   :  data.id
-		});
+		try{
+			if(6*Math.random()+1 > 5)
+				throw new Error("I'm random error for test retry");
+			if(/6/.test(data.receiver.toString()))
+				data.success(); // successfull received 
+			else if(/7/.test(data.receiver.toString())){
+				data.buffered(); // received and buffered, need send success ACK after.
+				setTimeout(function(){
+					// send a success ack to the bearbox
+					app.write("ack",{ // write ack message and send it to the bearbox
+						nack : kannel.status.ack.success,
+						//time :  Math.floor((new Date).getTime()/1000), // unix time default Math.floor(Date.now()/1000) 
+						id   :  data.id
+					});
+				},5000);
+			} else
+				data.failed(); //receive sms failed do not try again
+		}catch(e){
+			// you can also use it, the bearbox will resend the message after. 
+			data.failed_tmp(); //receive sms failed retry later
+		}
 	});
 	app.connect();
 ```
@@ -238,7 +260,20 @@ Example : http://127.0.0.1:14014/cgi-bin/sendsms?from=07086&to=05026&text=Test
 Before start you must now It :
 
   - It's a kannel.js is a librarie who allow to create a smsbox remplacement for more efficient SMS VAS application.
-  - The new infrastructure become : SMSC <-> bearerbox <-> yourApplication instead of SMSC <-> bearerbox <-> smsbox <-> yourApplication
+  - The new infrastructure become : 
+
+```
+    +----------+----------+-------------+----------+-------------------------+----------+-------------------------+
+    | Operator | Protocol | Application | Protocol |       Application       | Protocol |       Application       |
+    +----------+----------+-------------+----------+-------------------------+----------+-------------------------+
+    | SMSC     | <socket> | bearerbox   | <socket> | Your NodeJs Application |          |                         |
+    +----------+----------+-------------+----------+-------------------------+----------+-------------------------+
+    |                                             Instead of                                                      |
+    +----------+----------+-------------+----------+-------------------------+----------+-------------------------+
+    | SMSC     | <socket> | bearerbox   | <socket> | smsbox                  | <http>   | Your NodeJs Application |
+    +----------+----------+-------------+----------+-------------------------+----------+-------------------------+
+```
+
   - For test processing it you must have
     - [git](https://git-scm.com/) for clone this repository.
       For install go to [here](https://git-scm.com/)
@@ -251,7 +286,7 @@ Before start you must now It :
 
 #### How start a sample
 
-Make your sur kannel is down, configured and work well (bearerbox and smsbox).
+Make your sure kannel is down, configured and work well (bearerbox and smsbox).
 
   - Clone kannel.js reposotory
     `$ git clone https://github.com/badlee/kannel.js.git`
@@ -263,7 +298,7 @@ Make your sur kannel is down, configured and work well (bearerbox and smsbox).
   	`$ node samples/scripting /etc/kannel/kannel.conf`
   - If you see `scripting box is connected to ` all is ok
 
-#### Send SMS to server
+#### Send SMS to your application
 You can send directly to your shortnumber or to your connected modem. But if you want test localy you must run fakesmsc (part of kannel-extras).
 
 `$ /usr/lib/kannel/test/fakesmsc "FROM TO text script"`
