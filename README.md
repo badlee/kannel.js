@@ -65,7 +65,13 @@ The parser use [JSONpath's syntax](http://goessner.net/articles/JsonPath/) for a
 		  receiver: data.sender,
 		  msgdata: 'Hello', // string or buffer
 		  id : data.id
-		});	
+		});
+		app.sendUCS2SMS({
+		  sender: data.receiver,
+		  receiver: data.sender,
+		  msgdata: 'Bonjour, Hi, 你好, صباح الخير', // UCS2 text
+		  id : data.id
+		})
 	});
 	app.connect();
 ```
@@ -251,7 +257,7 @@ Before start you must now It :
 
 #### How start a sample
 
-Make your sur kannel is down, configured and work well (bearerbox and smsbox).
+Make your sure kannel is down, configured and work well (bearerbox and smsbox).
 
   - Clone kannel.js reposotory
     `$ git clone https://github.com/badlee/kannel.js.git`
