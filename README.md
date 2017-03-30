@@ -1,7 +1,7 @@
 # Javascript implementation of Kannel Box protocol
 
 ### Description
-Kannel.js is a javascript implementation of Kannel Msg protocol, it allow write some powerful SMS VAS applications or  sms gateways with kannel and nodejs.
+Kannel.js is a javascript implementation of Kannel Box protocol, it allow write some powerful SMS VAS applications or  sms gateways with kannel and node.js
 
 [![NPM](https://nodei.co/npm/kannel.png?downloads=true&stars=true)](https://nodei.co/npm/kannel/) [![NPM](https://nodei.co/npm-dl/kannel.png?months=1)](https://nodei.co/npm/kannel/)
 
