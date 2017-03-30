@@ -261,7 +261,8 @@ Before start you must now It :
 
   - It's a kannel.js is a librarie who allow to create a smsbox remplacement for more efficient SMS VAS application.
   - The new infrastructure become : 
- ```
+
+```
     +----------+----------+-------------+----------+-------------------------+----------+-------------------------+
     | Operator | Protocol | Application | Protocol |       Application       | Protocol |       Application       |
     +----------+----------+-------------+----------+-------------------------+----------+-------------------------+
