@@ -1,0 +1,8 @@
+samples
+img
+kannel
+.git
+.npmignore
+README.md
+*.log
+node_modules
