@@ -103,8 +103,8 @@ The parser use [JSONpath's syntax](http://goessner.net/articles/JsonPath/) for a
 			else if(/7/.test(data.receiver.toString())){
 				data.buffered(); // received and buffered, need send success ACK after.
 				setTimeout(function(){
-					// send a success ack to the bearbox
-					app.write("ack",{ // write ack message and send it to the bearbox
+					// send a success ack to the bearerbox
+					app.write("ack",{ // write ack message and send it to the bearerbox
 						nack : kannel.status.ack.success,
 						//time :  Math.floor((new Date).getTime()/1000), // unix time default Math.floor(Date.now()/1000) 
 						id   :  data.id
@@ -113,7 +113,7 @@ The parser use [JSONpath's syntax](http://goessner.net/articles/JsonPath/) for a
 			} else
 				data.failed(); //receive sms failed do not try again
 		}catch(e){
-			// you can also use it, the bearbox will resend the message after. 
+			// you can also use it, the bearerbox will resend the message after. 
 			data.failed_tmp(); //receive sms failed retry later
 		}
 	});
