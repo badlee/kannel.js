@@ -1,3 +1,4 @@
+*.cnf
 *.log
 .git
 node_modules
