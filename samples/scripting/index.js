@@ -41,7 +41,7 @@ Object.defineProperties(languageTypes, {
 				VMs[this[i]] = require('child_process').fork(path.join(__dirname,'vm.js'),[this[i]]);
 				VMs[this[i]].on('message', function(m) {
 					var flash = 0;
-					if (m.type === 'sms'){
+					if (m.type === 'flash'){
 						m.type = "sms";
 						flash = 1;
 					}
