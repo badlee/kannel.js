@@ -70,11 +70,7 @@ if (cluster.isMaster) {
   });
   app.on("sms",function(data){
     console.log("Worker#{"+ cluster.worker.id +"} Recive SMS : ",data.id,data.msgdata.toString("utf8"));
-    app.write("ack",{
-        nack : kannel.status.ack.success,
-        time : Math.floor((new Date).getTime()/1000),
-        id   : data.id
-    });
+    data.success();// send success ack
     app.sendSMS({
       sender: data.receiver,
       receiver: data.sender,

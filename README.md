@@ -113,7 +113,7 @@ The parser use [JSONpath's syntax](http://goessner.net/articles/JsonPath/) for a
 			} else
 				data.failed(); //receive sms failed do not try again
 		}catch(e){
-			// you can also use retryLater the bearbox will resend the message after. 
+			// you can also use it, the bearbox will resend the message after. 
 			data.failed_tmp(); //receive sms failed retry later
 		}
 	});
