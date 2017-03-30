@@ -1,4 +1,4 @@
-# Javascript implementation of Kannel Msg protocol
+# Javascript implementation of Kannel Box protocol
 
 ### Description
 Kannel.js is a javascript implementation of Kannel Msg protocol, it allow write some powerful SMS VAS applications or  sms gateways with kannel and nodejs.
@@ -77,7 +77,7 @@ The parser use [JSONpath's syntax](http://goessner.net/articles/JsonPath/) for a
 ```
 
 
-### Send a delivery to SMS
+### Send a delivery ACK
 ```js
 	var kannel = require('kannel'),
 	    app = new kannel.smsbox("kannel/kannel.conf?"+
@@ -95,11 +95,27 @@ The parser use [JSONpath's syntax](http://goessner.net/articles/JsonPath/) for a
 			"][TO:",data.receiver.toString(),
 			"][MSG :",data.msgdata.toString(),
 		"]");
-		app.write("ack",{
-			nack : kannel.status.ack.success,
-			time :  Math.floor((new Date).getTime()/1000),
-			id   :  data.id
-		});
+		try{
+			if(6*Math.random()+1 > 5)
+				throw new Error("I'm random error for test retry");
+			if(/6/.test(data.receiver.toString()))
+				data.success(); // successfull received 
+			else if(/7/.test(data.receiver.toString())){
+				data.buffered(); // received and buffered, need send success ACK after.
+				setTimeout(function(){
+					// send a success ack to the bearbox
+					app.write("ack",{ // write ack message and send it to the bearbox
+						nack : kannel.status.ack.success,
+						//time :  Math.floor((new Date).getTime()/1000), // unix time default Math.floor(Date.now()/1000) 
+						id   :  data.id
+					});
+				},5000);
+			} else
+				data.failed(); //receive sms failed do not try again
+		}catch(e){
+			// you can also use retryLater the bearbox will resend the message after. 
+			data.failed_tmp(); //receive sms failed retry later
+		}
 	});
 	app.connect();
 ```
@@ -269,7 +285,7 @@ Make your sure kannel is down, configured and work well (bearerbox and smsbox).
   	`$ node samples/scripting /etc/kannel/kannel.conf`
   - If you see `scripting box is connected to ` all is ok
 
-#### Send SMS to server
+#### Send SMS to your application
 You can send directly to your shortnumber or to your connected modem. But if you want test localy you must run fakesmsc (part of kannel-extras).
 
 `$ /usr/lib/kannel/test/fakesmsc "FROM TO text script"`

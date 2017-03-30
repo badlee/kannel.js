@@ -1,6 +1,6 @@
 {
   "name": "kannel",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Kannel.js is a javascript implementation of Kannel Msg protocol, it allow write some powerful SMS VAS applications or  sms gateways with kannel and nodejs",
   "author": "Ulrich Badinga (badinga.ulrich@gmail.com)",
   "directories": {
