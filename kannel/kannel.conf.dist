@@ -1,0 +1,100 @@
+#Core Kannel Configuration Section
+group = core
+admin-port = 13000
+admin-password = kannel
+status-password = kannel
+admin-allow-ip = "*.*.*.*"
+wapbox-port = 13003
+smsbox-port = 13002
+log-file = "/var/log/kannel/bearerbox.log"
+access-log = "/var/log/kannel/bearerbox-access.log"
+log-level = 1
+unified-prefix = "+261,00261,0;+,00"
+
+#Wapbox
+group = wapbox
+bearerbox-host = localhost
+log-file = "/var/log/kannel/wapbox.log"
+
+#Smsbox
+group = smsbox
+bearerbox-host = localhost
+sendsms-port = 14000
+sendsms-url = "/cgi-bin/sendsms"
+sendsms-chars = "0123456789+-"
+global-sender = +261338165012
+log-level = 0
+log-file = "/var/log/kannel/smsbox.log"
+access-log = "/var/log/kannel/smsbox-access.log"
+smsbox-id = LoveIsMyReligion
+
+#Smsc
+group = smsc
+smsc = at
+smsc-id = Huawei-E153
+modemtype = huawei_e153
+device = /dev/ttyUSB0
+host = localhost
+sms-center = +261331110006
+my-number = +261338165012
+keepalive = 10
+speed = 9600
+sim-buffering = true
+
+#Modems
+group = modems
+id = huawei_e153
+name = "huawei E153"
+detect-string = "Huawei"
+init-string ="AT+CNMI=2,1,2,2,0"
+message-storage = "ME"
+speed = 9600
+
+#group = modems
+#id = huawei_e153
+#name = "Huawei E153"
+#detect-string = "huawei"
+#init-string = "ATQ0 V1 E1 S0=0 &C1 +FCLASS=0"
+#message-storage = "SM"
+#message-start = 1
+##reset-string = "ATZ"
+#need-sleep = true
+#speed = 460800
+
+#group = modems
+#id = zte
+#name = "ZTE"
+#detect-string = "ZTE"
+#init-string = "ATQ0 V1 E1 S0=0 &C1 &D2 +FCLASS=0"
+#message-storage = "ME"
+#speed=9600
+
+#Sms Service Test PHP
+group = sms-service
+accepted-smsc = Huawei-E153
+keyword = ""
+catch-all = true
+get-url = http://someso.mg/test.php?t=%t&q=%q&a=%a
+
+#Sendsms
+group = sendsms-user
+username = kannel
+password = kannel
+forced-smsc = huawei-E153
+user-allow-ip = "*.*.*.*"
+
+# SMSC fake
+group = smsc
+smsc = fake
+smsc-id = gsm1
+host = localhost
+port = 10000
+
+# route to smsbox
+group = smsbox-route
+smsbox-id = LoveIsMyReligion
+smsc-id = gsm1
+
+group = smsbox-route
+smsbox-id = LoveIsMyReligion
+smsc-id = Huawei-E153
