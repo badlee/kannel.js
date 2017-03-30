@@ -261,6 +261,7 @@ Before start you must now It :
 
   - It's a kannel.js is a librarie who allow to create a smsbox remplacement for more efficient SMS VAS application.
   - The new infrastructure become : 
+ ```
     +----------+----------+-------------+----------+-------------------------+----------+-------------------------+
     | Operator | Protocol | Application | Protocol |       Application       | Protocol |       Application       |
     +----------+----------+-------------+----------+-------------------------+----------+-------------------------+
@@ -270,7 +271,7 @@ Before start you must now It :
     +----------+----------+-------------+----------+-------------------------+----------+-------------------------+
     | SMSC     | <socket> | bearerbox   | <socket> | smsbox                  | <http>   | Your NodeJs Application |
     +----------+----------+-------------+----------+-------------------------+----------+-------------------------+
-
+```
 
   - For test processing it you must have
     - [git](https://git-scm.com/) for clone this repository.
