@@ -29,7 +29,6 @@ if (cluster.isMaster) {
   var sys = require("util");
   var kannel = require('../../lib');
   var status = kannel.status;
-  var iconv = require("iconv-lite");
   /*
 
   * load config from kannel configuration file
