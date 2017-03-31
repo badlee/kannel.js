@@ -1,0 +1,8 @@
+title: Kannel.js
+description: Kannel Box Protocol implemented for node.js application
+google_analytics: UA-50022226-1
+show_downloads: true
+theme: jekyll-theme-modernist
+
+gems:
+  - jekyll-mentions
