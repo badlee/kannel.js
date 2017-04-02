@@ -197,6 +197,29 @@ Run bearebox
 ```
 Type your SMS in REPL console, the server send a echo responce for each recieved sms. 
 
+#### Test smsToMail (clusterized)
+![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/smsToMail.png)
+
+##### Usage
+```sh
+    $ node samples/smsToMail [path to kannel.conf]
+```
+
+##### Example
+```sh
+    $ cd path/to/kannel.js
+    $ node samples/smsToMail
+	smsToMail worker #{1} is connected to 192.168.2.4:14001
+	smsToMail worker #{5} is connected to 192.168.2.4:14001
+	smsToMail worker #{4} is connected to 192.168.2.4:14001
+	smsToMail worker #{3} is connected to 192.168.2.4:14001
+	smsToMail worker #{6} is connected to 192.168.2.4:14001
+	smsToMail worker #{8} is connected to 192.168.2.4:14001
+	smsToMail worker #{7} is connected to 192.168.2.4:14001
+	smsToMail worker #{2} is connected to 192.168.2.4:14001
+
+```
+
 
 #### Test messagesBoard (websocket and sms chat)
 ![alt tag](https://raw.githubusercontent.com/badlee/kannel.js/master/img/messageBoard.png)
